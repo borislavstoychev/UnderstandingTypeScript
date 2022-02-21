@@ -1,18 +1,45 @@
-interface Person {
-  name: string;
-  age: number;
+interface Add {
+  (a: number, b: number): number;
+}
 
+let add: Add;
+
+add = (n1, n2) => {
+  return n1 + n2;
+};
+//with ? optional arguments!
+interface Named {
+  readonly name: string;
+  lastName?: string;
+}
+
+interface Greetable extends Named {
   greet(phrase: string): void;
 }
 
-let user1: Person;
+class Person implements Greetable {
+  name: string;
+  lastName?: string | undefined;
+  age = 30;
 
-user1 = {
-  name: 'Max',
-  age: 30,
-  greet(phrase: string) {
-    console.log(phrase + ' ' + this.name);
+  constructor(n: string, l?: string) {
+    this.name = n;
+    this.lastName = l;
   }
-};
 
-user1.greet('Hi there - I am');
+  greet(phrase: string) {
+    if (this.lastName) {
+      console.log(phrase + " " + this.name + " " + this.lastName);
+    } else {
+      console.log(phrase + " " + this.name);
+    }
+  }
+}
+
+let user1: Greetable;
+
+user1 = new Person("Max", "Stoychev");
+// user1.name = "Borcho"
+
+user1.greet("Hi there - I am");
+console.log(user1);
